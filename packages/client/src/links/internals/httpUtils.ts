@@ -108,14 +108,15 @@ export type ContentOptions = {
 };
 
 export const getUrl: GetUrl = (opts) => {
-  const parts = opts.url.split('?') as [string, string?];
+  const parts = opts.url.split('?') as [string, ...string[]];
   const base = parts[0].replace(/\/$/, ''); // Remove any trailing slashes
+  const search = parts.slice(1).join('?');
 
   let url = base + '/' + opts.path;
   const queryParts: string[] = [];
 
-  if (parts[1]) {
-    queryParts.push(parts[1]);
+  if (search) {
+    queryParts.push(search);
   }
   if ('inputs' in opts) {
     queryParts.push('batch=1');
